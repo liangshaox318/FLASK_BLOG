@@ -13,7 +13,7 @@ bootstrap = Bootstrap(app)
 moment = Moment(app)
 
 class NameForm(FlaskForm):
-	name = StringField('What's your name?,validators=[DataRequired()])
+	name = StringField('What\'s your name?',validators=[DataRequired()])
 	submit = SubmitField('Submit')
 
 @app.errorhandler(404)
@@ -27,8 +27,8 @@ def page_not_found(e):
 @app.route('/',methods=['GET','POST'])
 def index():
 	name = None
-	from = NameForm()
-	if form.validators_on_submit():
+	form = NameForm()
+	if form.validate_on_submit():
 		name = form.name.data
 		form.name.data = ''
 	return render_template('index.html',form=form,name=name)
