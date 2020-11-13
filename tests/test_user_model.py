@@ -1,7 +1,8 @@
+
 import unittest
 import time
 from app import create_app, db
-from app.models import User
+from app.models import User,AnonymousUser,Role,Permission
 
 
 class UserModelTestCase(unittest.TestCase):
@@ -58,3 +59,42 @@ class UserModelTestCase(unittest.TestCase):
         token = u.generate_confirmation_token(1)
         time.sleep(2)
         self.assertFalse(u.confirm(token))
+
+    def test_user_role(self):
+        Role.insert_roles()
+        u = User(email = '123@163.com',password='cat')
+        self.assertTrue(u.can(Permission.FOLLOW))
+        self.assertTrue(u.can(Permission.WRITE))
+        self.assertTrue(u.can(Permission.COMMIT))
+        self.assertFalse(u.can(Permission.MODERATE))
+        self.assertFalse(u.can(Permission.ADMIN))
+
+    def test_anonymous_user(self):
+        u = AnonymousUser()
+        self.assertFalse(u.can(Permission.FOLLOW))
+        self.assertFalse(u.can(Permission.WRITE))
+        self.assertFalse(u.can(Permission.COMMIT))
+        self.assertFalse(u.can(Permission.MODERATE))
+        self.assertFalse(u.can(Permission.ADMIN))
+
+    def test_follow(self):
+        u1 = User(email = '123@163.com',password='cat')
+        u2 = User(email = '111@163.com',password='cat')
+        db.session.add(u1,u2)
+        db.session.commit()
+        u1.follow(u2)
+        db.session.commit()
+        self.assertTrue(u2.is_followed_by(u1))
+        self.assertTrue(u1.is_following(u2))
+
+    def test_unfollow(self):
+        u1 = User(email = '123@163.com',password='cat')
+        u2 = User(email = '111@163.com',password='cat')
+        db.session.add(u1,u2)
+        db.session.commit()
+        u1.follow(u2)
+        db.session.commit()
+        u1.unfollow(u2)
+        db.session.commit()
+        self.assertFalse(u2.is_followed_by(u1))
+        self.assertFalse(u1.is_following(u2))
