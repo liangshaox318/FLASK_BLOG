@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}Flasky - Edit Profile{% endblock %}
+{% block title %}Flask-Blog 编辑个人资料{% endblock %}
 
 {% block page_content %}
 <div class="page_header">
 	{% if current_user.is_administrator()%}
-	<h1>[ADMIN] Edit ID:{{ user.id }} Profile</h1>
+	<h1>[管理员] 编辑 ID:{{ user.id }}资料</h1>
 	{% else %}
-	<h1>Edit Your Profile</h1>
+	<h1>编辑你的资料</h1>
 	{% endif %}
 </div>
 <div class="col-md-4">

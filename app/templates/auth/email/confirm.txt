@@ -1,13 +1,12 @@
-Dear {{ user.username}}
+亲爱的 {{ user.username}}
 
-Welcome to Flasky!
+欢迎加入 Flask_Blog！
 
-To confirm your account please click on the following link:
+为了验证您的账号,请点击以下链接:
 
 {{ url_for('auth.confirm',token=token,_external=True) }}
 
-Sincerely,
 
-The Flasky Team
+Flask-Blog Team
 
-Note: replies to this email address are not monitored.
+注意:本邮件为系统邮件，请勿直接回复.

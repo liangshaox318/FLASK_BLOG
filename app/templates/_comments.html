@@ -11,7 +11,7 @@
             <div class="comment-author"><a href="{{ url_for('.user', username=comment.author.username) }}">{{ comment.author.username }}</a></div>
             <div class="comment-body">
                 {% if comment.disabled %}
-                <p><i>This comment has been disabled by a moderator.</i></p>
+                <p><i>该评论已被管理员屏蔽.</i></p>
                 {% endif %}
                 {% if moderate or not comment.disabled %}
                     {% if comment.body_html %}
@@ -25,22 +25,22 @@
                 <br>
                 {% if comment.disabled %}
                 <a class="btn btn-default btn-xs" href="{{ url_for('.moderate_enable',
-                    id=comment.id,page=page) }}">Enable</a>
+                    id=comment.id,page=page) }}">解禁</a>
                 {% else %}
                 <a class="btn btn-danger btn-xs" href="{{ url_for('.moderate_disable',
-                    id=comment.id,page=page) }}">Disable</a>
+                    id=comment.id,page=page) }}">屏蔽</a>
                 {% endif %}
             {% endif %}
             
             <div class="comment-footer">
                 {% if moderate %}
                 <a href="{{ url_for('.post',id=comment.post_id) }}">
-                    <span class="label label-default">Permalink</span>
+                    <span class="label label-default">文章链接</span>
                 </a>
                 {% endif %}
                 {% if current_user.id == comment.author_id or current_user.can(Permission.MODERATE) %}
                 <a class="btn btn-danger btn-xs" href="{{ url_for('.delete_comment',
-                    id=comment.id ,page=page,moderate=moderate,post_id=comment.post_id) }}">Delete</a>
+                    id=comment.id ,page=page,moderate=moderate,post_id=comment.post_id) }}">删除</a>
                 {% endif %}
             </div>
             

@@ -78,7 +78,7 @@ def post(id):
                       author =current_user._get_current_object())
     db.session.add(comment)
     db.session.commit()
-    flash('Your comment has been published.')
+    flash('您的评论提交成功.')
     return redirect(url_for('.post',id=post.id,page=-1))
   page = request.args.get('page',1,type=int)
   if page == -1:
@@ -135,7 +135,7 @@ def delete_post(id):
       abort(403)
   db.session.delete(post)
   db.session.commit()
-  flash('Post has been deleted.')
+  flash('文章删除成功.')
   return redirect(url_for('.index',page=page))
 
 @main.route('/delete_comment/<int:id>')
@@ -148,7 +148,7 @@ def delete_comment(id):
       abort(403)
   db.session.delete(comment)
   db.session.commit()
-  flash('Comment has been deleted.')
+  flash('评论删除成功.')
   if request.args.get('moderate',False,type=bool):
     return redirect(url_for('.moderate',
                           page=page))
@@ -162,14 +162,14 @@ def delete_comment(id):
 def follow(username):
   user = User.query.filter_by(username=username).first()
   if user is None:
-    flash('Invalid user.')
+    flash('无效用户.')
     return redirect(url_for('.index'))
   if current_user.is_following(user):
-    flash('You are already following this user.')
+    flash('您已关注该用户.')
     return redirect(url_for('.user',username=username))
   current_user.follow(user)
   db.session.commit()
-  flash('You are now following %s.' %username )
+  flash('关注 %s成功.' %username )
   return redirect(url_for('.user',username=username))
 
 @main.route('/unfollow/<username>')
@@ -178,19 +178,19 @@ def follow(username):
 def unfollow(username):
   user = User.query.filter_by(username=username).first()
   if user is None:
-    flash('Invalid user.')
+    flash('无效用户.')
     return redirect(url_for('.index'))
   if current_user.is_following(user):
     current_user.unfollow(user)
     db.session.commit()
-    flash('You are now unfollowing %s.' %username )
+    flash('您已取消关注 %s.' %username )
     return redirect(url_for('.user',username=username))
 
 @main.route('/followers/<username>')
 def followers(username):
   user = User.query.filter_by(username=username).first()
   if user is None:
-    flash('Invalid user.')
+    flash('无效用户.')
     return redirect(url_for('.index'))
   page = request.args.get('page',1,type=int)
   pagination = user.followers.paginate(
@@ -198,7 +198,7 @@ def followers(username):
         error_out=False)
   follows =[{'user':item.follower ,'timestamp':item.timestamp} 
             for item in pagination.items]
-  return render_template('followers.html',user = user ,title = "Followes of",
+  return render_template('followers.html',user = user ,title = "",
                         endpoint = '.followers' , pagination=pagination,
                         follows = follows)
 
@@ -206,7 +206,7 @@ def followers(username):
 def followed_by(username):
   user = User.query.filter_by(username=username).first()
   if user is None:
-    flash('Invalid user.')
+    flash('无效用户.')
     return redirect(url_for('.index'))
   page = request.args.get('page',1,type=int)
   pagination = user.followed.paginate(
@@ -214,7 +214,7 @@ def followed_by(username):
         error_out=False)
   follows =[{'user':item.followed ,'timestamp':item.timestamp} 
             for item in pagination.items]
-  return render_template('followers.html',user = user ,title = "Followes by",
+  return render_template('followers.html',user = user ,title = "被",
                         endpoint = '.followed_by' , pagination=pagination,
                         follows = follows)
 
@@ -231,7 +231,7 @@ def edit(id):
     post.body = form.body.data
     db.session.add(post)
     db.session.commit()
-    flash("The post has been updated.")
+    flash("文章修改成功.")
     return redirect(url_for('.post',id =post.id))
   form.body.data = post.body
   return render_template('edit_post.html',form = form )
@@ -246,7 +246,7 @@ def edit_profile():
     current_user.about_me = form.about_me.data
     db.session.add(current_user._get_current_object())
     db.session.commit()
-    flash('Your profile has been updated.')
+    flash('资料修改成功.')
     return redirect(url_for('.user',username = current_user.username))
   form.name.data = current_user.name
   form.location.data = current_user.location
@@ -269,7 +269,7 @@ def edit_profile_admin(id):
     user.about_me = form.about_me.data
     db.session.add(user)
     db.session.commit()
-    flash('The profile has been updated.')
+    flash('资料修改成功.')
     return redirect(url_for('.user',username = user.username))
   form.email.data = user.email
   form.username.data = user.username

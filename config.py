@@ -10,8 +10,8 @@ class Config:
     MAIL_USE_SSL = False if os.environ.get('MAIL_USE_SSL', True) == 'False' else True
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-    FLASKY_MAIL_SUBJECT_PREFIX = '[Flasky]'
-    FLASKY_MAIL_SENDER = 'Flasky Admin <'+ str(MAIL_USERNAME) + '>'
+    FLASKY_MAIL_SUBJECT_PREFIX = '[Flask_Blog]'
+    FLASKY_MAIL_SENDER = 'Flask_Blog Admin <'+ str(MAIL_USERNAME) + '>'
     FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     FLASKY_POSTS_PER_PAGE = 10

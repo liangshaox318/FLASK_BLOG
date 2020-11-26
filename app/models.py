@@ -216,7 +216,7 @@ class User(UserMixin,db.Model):
 
     @property
     def password(self):
-        raise AttributeError('password is not a readable attribute')
+        raise AttributeError('密码不可见.')
 
     @property
     def followed_posts(self):
