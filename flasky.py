@@ -4,16 +4,15 @@ import sys
 from flask_migrate import Migrate,upgrade
 from app import create_app, db
 from app.models import User, Role,Post,Comment
+from dotenv import load_dotenv
 
-@app.cli.command()
-def deploy():
-	"""Run deployment tasks"""
-	#把数据库迁移到最新版本
-	upgrade()
-	#创建或更新角色
-	Role.insert_roles()
-	#确保所有用户都关注自己
-	User.add_self_follows()
+dotenv_path = os.path.join(os.path.dirname(__file__),'.flaskenv')
+if os.path.exists(dotenv_path):
+	load_dotenv(dotenv_path)
+dotenv_path2 = os.path.join(os.path.dirname(__file__),'.env')
+if os.path.exists(dotenv_path2):
+	load_dotenv(dotenv_path2)
+
 
 COV = None
 if os.environ.get('FLAKS_COVERAGE'):
@@ -28,6 +27,16 @@ migrate = Migrate(app, db)
 @app.shell_context_processor
 def make_shell_context():
     return dict(db=db, User=User, Role=Role,Post=Post,Comment=Comment)
+
+@app.cli.command()
+def deploy():
+	"""Run deployment tasks"""
+	#把数据库迁移到最新版本
+	upgrade()
+	#创建或更新角色
+	Role.insert_roles()
+	#确保所有用户都关注自己
+	User.add_self_follows()
 
 
 @app.cli.command()
