@@ -6,12 +6,12 @@ from app import create_app, db
 from app.models import User, Role,Post,Comment
 from dotenv import load_dotenv
 
-dotenv_path = os.path.join(os.path.dirname(__file__),'.flaskenv')
-if os.path.exists(dotenv_path):
-	load_dotenv(dotenv_path)
-dotenv_path2 = os.path.join(os.path.dirname(__file__),'.env')
-if os.path.exists(dotenv_path2):
-	load_dotenv(dotenv_path2)
+dotenv_flaskenv_path = os.path.join(os.path.dirname(__file__),'.flaskenv')
+if os.path.exists(dotenv_flaskenv_path):
+	load_dotenv(dotenv_flaskenv_path)
+dotenv_env_path = os.path.join(os.path.dirname(__file__),'.env')
+if os.path.exists(dotenv_env_path):
+	load_dotenv(dotenv_env_path)
 
 
 COV = None
